@@ -4,8 +4,8 @@ from flask import render_template, redirect, request, session, flash
 
 @app.route('/dashboard')
 def dashboard():
-    if not session:
-        return redirect('/')
+    if 'user_id' not in session:
+        return redirect('/log_out')
     data = {
         'user_id': session['user_id']
     }

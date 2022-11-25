@@ -54,9 +54,12 @@ class User:
 
     @classmethod
     def show_user_posts(cls, data):
-        query = "SELECT posts.id, posts.content, posts.user_id, COUNT(likes.id) as like_num FROM posts LEFT JOIN likes on likes.post_id = posts.id WHERE posts.user_id = %(user_id)s;"
+        query = "SELECT posts.id, posts.content, posts.user_id, COUNT(likes.id) as like_num FROM posts LEFT JOIN likes on likes.post_id = posts.id WHERE posts.user_id = %(user_id)s GROUP BY posts.id;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
-        return results
+        posts = []
+        for row in results:
+            posts.append(row)
+        return posts
 
     @staticmethod
     def validate_user(data):
